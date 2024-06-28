@@ -7,7 +7,12 @@ import { Button } from "./ui/button";
 import axios from "axios";
 import { Label } from "./ui/label";
 import { useEffect, useState } from "react";
-import { LoaderCircle } from "lucide-react";
+import { CalendarIcon, LoaderCircle } from "lucide-react";
+import { addDays, format } from "date-fns";
+import { DateRange } from "react-day-picker";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Calendar } from "./ui/calendar";
+import { cn } from "@/lib/utils";
 
 const fetchCountries = async () => {
     const response = await axios.get('https://countriesnow.space/api/v0.1/countries');
@@ -16,6 +21,11 @@ const fetchCountries = async () => {
 
 
 export default function AdicionarPlanejamento() {
+
+    const [date, setDate] = useState<DateRange | undefined>({
+        from: new Date(),
+        to: addDays(new Date(), 10),
+    })
 
     const { data, isLoading, error } = useQuery<ResponseFetchCountries>({
         queryKey: ['countries'],
@@ -108,6 +118,44 @@ export default function AdicionarPlanejamento() {
                                 <LoaderCircle className="animate-spin" />
                             </div>
                         )}
+                    </div>
+                    <div className={cn("grid gap-2")}>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button
+                                    id="date"
+                                    variant={"outline"}
+                                    className={cn(
+                                        "w-[300px] justify-start text-left font-normal",
+                                        !date && "text-muted-foreground"
+                                    )}
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {date?.from ? (
+                                        date.to ? (
+                                            <>
+                                                {format(date.from, "LLL dd, y")} -{" "}
+                                                {format(date.to, "LLL dd, y")}
+                                            </>
+                                        ) : (
+                                            format(date.from, "LLL dd, y")
+                                        )
+                                    ) : (
+                                        <span>Pick a date</span>
+                                    )}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                    initialFocus
+                                    mode="range"
+                                    defaultMonth={date?.from}
+                                    selected={date}
+                                    onSelect={setDate}
+                                    numberOfMonths={2}
+                                />
+                            </PopoverContent>
+                        </Popover>
                     </div>
                 </div>
             </DialogContent>
