@@ -13,6 +13,7 @@ import { DateRange } from "react-day-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
 import { cn } from "@/lib/utils";
+import { Input } from "./ui/input";
 
 const fetchCountries = async () => {
     const response = await axios.get('https://countriesnow.space/api/v0.1/countries');
@@ -156,6 +157,10 @@ export default function AdicionarPlanejamento() {
                                 />
                             </PopoverContent>
                         </Popover>
+                    </div>
+                    <div>
+                        <Label>Orçamento</Label>
+                        <Input type="number" className="input" placeholder="Orçamento" />
                     </div>
                 </div>
             </DialogContent>
