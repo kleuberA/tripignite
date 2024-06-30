@@ -28,6 +28,10 @@ export default function AdicionarPlanejamento() {
         to: addDays(new Date(), 10),
     })
 
+    console.log(date?.from?.getDate(), date?.to?.getDate());
+    console.log((date?.to?.getDate() || 0) - (date?.from?.getDate() || 0))
+    console.log((date?.from?.getDate() || 0) > (date?.to?.getDate() || 0))
+
     const { data, isLoading, error } = useQuery<ResponseFetchCountries>({
         queryKey: ['countries'],
         queryFn: fetchCountries
@@ -157,10 +161,22 @@ export default function AdicionarPlanejamento() {
                                 />
                             </PopoverContent>
                         </Popover>
+                        {(date?.from?.getDate() || 0) > (date?.to?.getDate() || 0) ? (
+                            <p className="">Sua viagem sera de {(date?.from?.getDate() || 0) - (date?.to?.getDate() || 0)} dia(s).</p>
+                        ) : (
+                            <p>Sua viagem sera de {(date?.to?.getDate() || 0) - (date?.from?.getDate() || 0)} dia(s).</p>
+                        )}
                     </div>
                     <div>
                         <Label>Orçamento</Label>
                         <Input type="number" className="input" placeholder="Orçamento" />
+                    </div>
+                    <div>
+                        <Label>Descrição</Label>
+                        <Input className="input" placeholder="Descrição" />
+                    </div>
+                    <div>
+                        <Button variant="default">Criar Planejamento</Button>
                     </div>
                 </div>
             </DialogContent>
