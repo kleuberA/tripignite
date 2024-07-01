@@ -1,19 +1,19 @@
 "use client"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { ResponseFetchCountries } from "@/types/Countries";
-import { useQuery } from "@tanstack/react-query";
-import { Button } from "./ui/button";
-import axios from "axios";
-import { Label } from "./ui/label";
-import { useEffect, useState } from "react";
-import { CalendarIcon, LoaderCircle } from "lucide-react";
-import { addDays, format } from "date-fns";
-import { DateRange } from "react-day-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { ResponseFetchCountries } from "@/types/Countries";
+import { CalendarIcon, LoaderCircle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { DateRange } from "react-day-picker";
+import { useEffect, useState } from "react";
+import { addDays, format } from "date-fns";
 import { Calendar } from "./ui/calendar";
-import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { cn } from "@/lib/utils";
+import axios from "axios";
 
 const fetchCountries = async () => {
     const response = await axios.get('https://countriesnow.space/api/v0.1/countries');
@@ -27,10 +27,6 @@ export default function AdicionarPlanejamento() {
         from: new Date(),
         to: addDays(new Date(), 10),
     })
-
-    console.log(date?.from?.getDate(), date?.to?.getDate());
-    console.log((date?.to?.getDate() || 0) - (date?.from?.getDate() || 0))
-    console.log((date?.from?.getDate() || 0) > (date?.to?.getDate() || 0))
 
     const { data, isLoading, error } = useQuery<ResponseFetchCountries>({
         queryKey: ['countries'],
@@ -162,9 +158,9 @@ export default function AdicionarPlanejamento() {
                             </PopoverContent>
                         </Popover>
                         {(date?.from?.getDate() || 0) > (date?.to?.getDate() || 0) ? (
-                            <p className="">Sua viagem sera de {(date?.from?.getDate() || 0) - (date?.to?.getDate() || 0)} dia(s).</p>
+                            <p className="">Sua viagem será de {(date?.from?.getDate() || 0) - (date?.to?.getDate() || 0)} dia(s).</p>
                         ) : (
-                            <p>Sua viagem sera de {(date?.to?.getDate() || 0) - (date?.from?.getDate() || 0)} dia(s).</p>
+                            <p>Sua viagem será de {(date?.to?.getDate() || 0) - (date?.from?.getDate() || 0)} dia(s).</p>
                         )}
                     </div>
                     <div>
